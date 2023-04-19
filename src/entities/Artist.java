@@ -24,6 +24,10 @@ public class Artist {
         albums.add(album);
     }
 
+    public void removeAlbum(Album album) {
+        albums.remove(album);
+    }
+
     public String toString() {
         return name;
     }

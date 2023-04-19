@@ -24,4 +24,14 @@ public class InMemoryRepository implements Repository {
     public void addArtist(Artist artist) {
         artists.add(artist);
     }
+
+    @Override
+    public void deleteArtist(Artist artist) {
+        artists.remove(artist);
+    }
+
+    @Override
+    public void deleteAlbum(Artist artist, Album album) {
+        artist.removeAlbum(album);
+    }
 }

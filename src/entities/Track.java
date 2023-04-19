@@ -6,7 +6,7 @@ public class Track {
     private final int number;
     private final String title;
     private final Duration duration;
-    private String lyrics;
+    private String lyrics = "";
     private final Album album;
 
     public Track(int number, String title, Duration duration, Album album) {

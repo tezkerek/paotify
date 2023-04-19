@@ -5,6 +5,8 @@ import entities.Artist;
 import entities.Track;
 import repository.Repository;
 
+import java.util.List;
+
 public class Menu {
     Prompter prompter;
     Repository repository;
@@ -19,7 +21,7 @@ public class Menu {
     }
 
     protected boolean readCommand() {
-        var cmd = prompter.promptString("Cmd: ");
+        var cmd = prompter.promptString("Cmd: ").trim();
         switch (cmd) {
             case "quit", "exit" -> {
                 return false;
@@ -30,6 +32,11 @@ public class Menu {
             case "artist-add" -> {
                 var artist = readArtist();
                 repository.addArtist(artist);
+            }
+            case "artist-rm" -> {
+                var artist = chooseArtist();
+                repository.deleteArtist(artist);
+                System.out.println("Removed " + artist);
             }
             case "album-ls" -> {
                 System.out.println(repository.getAlbums());
@@ -50,6 +57,29 @@ public class Menu {
 
                 artist.addAlbum(album);
                 System.out.printf("Added %s to %s's discography%n", album, artist);
+            }
+            case "album-rm" -> {
+                var artist = chooseArtist();
+                var album = chooseAlbum(artist);
+                repository.deleteAlbum(artist, album);
+                System.out.println("Removed " + album);
+            }
+            case "lyrics" -> {
+                var track = chooseTrack();
+                var lyrics = track.getLyrics();
+                System.out.println(lyrics.isBlank() ? "No lyrics available" : lyrics);
+            }
+            case "lyrics-set" -> {
+                var track = chooseTrack();
+                var lyrics = new StringBuilder();
+
+                while (true) {
+                    var line = prompter.promptString("Verse (empty line to finish): ");
+                    if (line.isBlank()) break;
+                    lyrics.append(line).append('\n');
+                }
+
+                track.setLyrics(lyrics.toString());
             }
         }
 
@@ -76,23 +106,41 @@ public class Menu {
     }
 
     protected Artist chooseArtist() {
-        // TODO: What if there are no artists?
-        var artists = repository.getArtists();
+        return choose(repository.getArtists());
+    }
 
+    protected Album chooseAlbum(Artist artist) {
+        return choose(artist.getAlbums());
+    }
+
+    protected Album chooseAlbum() {
+        return chooseAlbum(chooseArtist());
+    }
+
+    protected Track chooseTrack(Album album) {
+        return choose(album.getTracks());
+    }
+
+    protected Track chooseTrack() {
+        return chooseTrack(chooseAlbum());
+    }
+
+    protected <T> T choose(List<T> options) {
+        // TODO: What if options is empty?
         int id = 1;
-        for (var artist : artists) {
+        for (var artist : options) {
             System.out.println(id + ". " + artist);
             id++;
         }
 
-        Artist chosenArtist = null;
-        while (chosenArtist == null) {
-            var choice = prompter.promptInt("Choose artist: ");
-            if (!(1 <= choice && choice <= artists.size())) continue;
+        T chosenOption = null;
+        while (chosenOption == null) {
+            var choice = prompter.promptInt("Choose: ");
+            if (!(1 <= choice && choice <= options.size())) continue;
 
-            chosenArtist = artists.get(choice - 1);
+            chosenOption = options.get(choice - 1);
         }
 
-        return chosenArtist;
+        return chosenOption;
     }
 }

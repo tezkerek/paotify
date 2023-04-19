@@ -11,4 +11,8 @@ public interface Repository {
     List<Album> getAlbums();
 
     void addArtist(Artist artist);
+
+    void deleteArtist(Artist artist);
+
+    void deleteAlbum(Artist artist, Album album);
 }
