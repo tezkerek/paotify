@@ -3,7 +3,7 @@
 1. Track
 2. Album
 3. Artist
-4. Label
+4. Genre
 5. Concert
 6. Merch
 7. Playlist

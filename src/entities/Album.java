@@ -8,17 +8,19 @@ import java.util.List;
 public class Album {
     private final String title;
     private final LocalDate releaseDate;
+    private final Genre genre;
     private final List<Track> tracks = new ArrayList<>();
     private final Artist artist;
 
-    public Album(String title, LocalDate releaseDate, Artist artist) {
+    public Album(String title, LocalDate releaseDate, Genre genre, Artist artist) {
         this.title = title;
         this.releaseDate = releaseDate;
+        this.genre = genre;
         this.artist = artist;
     }
 
-    public Album(String title, LocalDate releaseDate) {
-        this(title, releaseDate, null);
+    public Album(String title, LocalDate releaseDate, Genre genre) {
+        this(title, releaseDate, genre, null);
     }
 
     public String getTitle() {
@@ -27,6 +29,10 @@ public class Album {
 
     public LocalDate getReleaseDate() {
         return releaseDate;
+    }
+
+    public Genre getGenre() {
+        return genre;
     }
 
     public List<Track> getTracks() {

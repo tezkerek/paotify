@@ -2,6 +2,7 @@ package menu;
 
 import entities.Album;
 import entities.Artist;
+import entities.Genre;
 import entities.Track;
 import repository.Repository;
 
@@ -94,8 +95,9 @@ public class Menu {
     protected Album readAlbum(Artist artist) {
         var title = prompter.promptString("Album title: ");
         var releaseDate = prompter.promptDate("Album release date: ");
+        var genre = chooseGenre();
 
-        return new Album(title, releaseDate, artist);
+        return new Album(title, releaseDate, genre, artist);
     }
 
     protected Track readTrack(int number, Album album) throws PromptException {
@@ -103,6 +105,10 @@ public class Menu {
         var duration = prompter.promptDuration(String.format("Track #%d duration: ", number));
 
         return new Track(number, title, duration, album);
+    }
+
+    protected Genre chooseGenre() {
+        return choose(List.of(Genre.values()));
     }
 
     protected Artist chooseArtist() {
