@@ -42,6 +42,10 @@ public class Track {
 
     @Override
     public String toString() {
-        return String.format("%d. %s", number, title);
+        return String.format("%s", title);
+    }
+
+    public String toLongString() {
+        return String.format("%s - %s", title, getAlbum().getArtist().getName());
     }
 }

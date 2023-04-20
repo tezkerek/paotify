@@ -1,9 +1,6 @@
 package menu;
 
-import entities.Album;
-import entities.Artist;
-import entities.Genre;
-import entities.Track;
+import entities.*;
 import repository.Repository;
 
 import java.util.ArrayList;
@@ -84,6 +81,17 @@ public class Menu {
 
                 track.setLyrics(lyrics.toString());
             }
+            case "playlist-add" -> {
+                var playlist = readPlaylist();
+                repository.addPlaylist(playlist);
+            }
+            case "playlist-ls" -> {
+                System.out.println(repository.getPlaylists());
+            }
+            case "playlist-show" -> {
+                var playlist = choosePlaylist();
+                playlist.getTracks().forEach(track -> System.out.println(track.toLongString()));
+            }
         }
 
         return true;
@@ -109,6 +117,12 @@ public class Menu {
         return new Track(number, title, duration, album);
     }
 
+    protected Playlist readPlaylist() {
+        var name = prompter.promptString("Playlist name: ");
+        var tracks = chooseMultipleTracks();
+        return new Playlist(name, tracks);
+    }
+
     protected Genre chooseGenre() {
         return choose(List.of(Genre.values()));
     }
@@ -131,6 +145,14 @@ public class Menu {
 
     protected Track chooseTrack() {
         return chooseTrack(chooseAlbum());
+    }
+
+    protected Playlist choosePlaylist() {
+        return choose(repository.getPlaylists());
+    }
+
+    protected List<Track> chooseMultipleTracks() {
+        return choose(repository.getTracks(), true, Track::toLongString);
     }
 
     protected <T> T choose(List<T> options) {
