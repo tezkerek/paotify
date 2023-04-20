@@ -40,12 +40,16 @@ public class Track {
         return album;
     }
 
+    public Artist getArtist() {
+        return getAlbum().getArtist();
+    }
+
     @Override
     public String toString() {
         return String.format("%s", title);
     }
 
     public String toLongString() {
-        return String.format("%s - %s", title, getAlbum().getArtist().getName());
+        return String.format("%s - %s", title, getArtist().getName());
     }
 }
