@@ -5,6 +5,7 @@ import repository.Repository;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,6 +27,9 @@ public class Main {
         iridescent.addTrack(new Track(6, "Panopticon", Duration.ofMinutes(3).plusSeconds(34), iridescent));
         sp.addAlbum(iridescent);
 
+        sp.addConcert(new Concert("Sydney", LocalDate.parse("2018-05-20"), sp));
+        sp.addConcert(new Concert("Perth", LocalDate.parse("2022-07-10"), sp));
+
         repo.addArtist(sp);
 
         var bo = new Artist("Bad Omens");
@@ -41,8 +45,13 @@ public class Main {
         tdpm.addTrack(new Track(3, "Careful What You Wish For", Duration.ofMinutes(4).plusSeconds(32), tdpm));
         bo.addAlbum(fgbgfm);
 
+        bo.addConcert(new Concert("London", LocalDate.parse("2021-08-10"), bo));
+        bo.addConcert(new Concert("Kentucky", LocalDate.parse("2020-03-18"), bo));
+
         repo.addArtist(bo);
 
-        repo.addPlaylist(new Playlist("Fire mixtape", iridescent.getTracks()));
+        var playlist = new ArrayList<>(iridescent.getTracks());
+        playlist.addAll(tdpm.getTracks().subList(0, 2));
+        repo.addPlaylist(new Playlist("Fire mixtape", playlist));
     }
 }

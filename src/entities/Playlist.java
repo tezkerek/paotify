@@ -1,8 +1,6 @@
 package entities;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Playlist {
     private final String name;
@@ -19,6 +17,17 @@ public class Playlist {
 
     public List<Track> getTracks() {
         return Collections.unmodifiableList(tracks);
+    }
+
+    public List<Artist> getArtists() {
+        return tracks.stream().map(Track::getArtist).distinct().toList();
+    }
+
+    public List<Concert> getSortedConcerts() {
+        return getArtists().stream()
+                .flatMap(artist -> artist.getConcerts().stream())
+                .sorted(Comparator.comparing(Concert::date).reversed())
+                .toList();
     }
 
     @Override

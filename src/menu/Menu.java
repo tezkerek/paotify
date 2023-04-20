@@ -92,6 +92,18 @@ public class Menu {
                 var playlist = choosePlaylist();
                 playlist.getTracks().forEach(track -> System.out.println(track.toLongString()));
             }
+            case "concert-add" -> {
+                var artist = chooseArtist();
+                var concert = readConcert(artist);
+                artist.addConcert(concert);
+            }
+            case "playlist-concerts" -> {
+                var playlist = choosePlaylist();
+                playlist.getSortedConcerts().forEach(concert -> {
+                    var artist = concert.artist();
+                    System.out.printf("%s %s - %s\n", concert.date(), concert.location(), artist.getName());
+                });
+            }
         }
 
         return true;
@@ -121,6 +133,12 @@ public class Menu {
         var name = prompter.promptString("Playlist name: ");
         var tracks = chooseMultipleTracks();
         return new Playlist(name, tracks);
+    }
+
+    private Concert readConcert(Artist artist) {
+        var location = prompter.promptString("Concert location: ");
+        var date = prompter.promptDate("Concert date: ");
+        return new Concert(location, date, artist);
     }
 
     protected Genre chooseGenre() {
