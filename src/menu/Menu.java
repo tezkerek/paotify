@@ -6,7 +6,9 @@ import entities.Genre;
 import entities.Track;
 import repository.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class Menu {
     Prompter prompter;
@@ -132,19 +134,33 @@ public class Menu {
     }
 
     protected <T> T choose(List<T> options) {
+        return choose(options, false, T::toString).get(0);
+    }
+
+    protected <T> List<T> choose(List<T> options, boolean allowMultiple, Function<T, String> show) {
         // TODO: What if options is empty?
         int id = 1;
         for (var artist : options) {
-            System.out.println(id + ". " + artist);
+            System.out.println(id + ". " + show.apply(artist));
             id++;
         }
 
-        T chosenOption = null;
-        while (chosenOption == null) {
-            var choice = prompter.promptInt("Choose: ");
-            if (!(1 <= choice && choice <= options.size())) continue;
+        var chosenOption = new ArrayList<T>();
+        while (chosenOption.isEmpty()) {
+            List<Integer> choices;
+            if (allowMultiple) {
+                choices = prompter.promptInts("Choose: ");
+            } else {
+                choices = List.of(prompter.promptInt("Choose: "));
+            }
 
-            chosenOption = options.get(choice - 1);
+            for (int choice : choices) {
+                if (!(1 <= choice && choice <= options.size())) {
+                    chosenOption.clear();
+                    break;
+                }
+                chosenOption.add(options.get(choice - 1));
+            }
         }
 
         return chosenOption;
