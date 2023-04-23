@@ -6,19 +6,24 @@
 4. Genre
 5. Concert
 6. Merch
-7. Playlist
-8. Listener
+7. Review
+8. Playlist
 
 ### Operations
 
 1. Add artist
 2. Remove artist
-3. Add concerts to artist
-4. Add album
-5. Remove album
-6. Add lyrics to a track
-7. Create listener
-8. Remove listener
-9. Create playlist for listener
-10. Remove playlist
-11. Show upcoming concerts from artists in a playlist
+3. List artists
+4. Add concerts to artist
+5. Add album
+6. Remove album
+7. List albums
+8. View lyrics of a track
+9. Add lyrics to a track
+10. Create playlist
+11. Remove playlist
+12. List playlists
+13. Show upcoming concerts from artists in a playlist
+14. Add album review
+15. Remove review
+16. List album reviews
