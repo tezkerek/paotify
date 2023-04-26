@@ -18,12 +18,10 @@
 5. Add album
 6. Remove album
 7. List albums
-8. View lyrics of a track
-9. Add lyrics to a track
-10. Create playlist
-11. Remove playlist
-12. List playlists
-13. Show upcoming concerts from artists in a playlist
-14. Add album review
-15. Remove review
-16. List album reviews
+8. Add album review
+9. List album reviews
+10. View lyrics of a track
+11. Add lyrics to a track
+12. Create playlist
+13. List playlists
+14. Show upcoming concerts from artists in a playlist
