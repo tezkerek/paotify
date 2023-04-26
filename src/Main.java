@@ -40,9 +40,12 @@ public class Main {
         bo.addAlbum(tdpm);
 
         var fgbgfm = new Album("Finding God Before God Finds Me", LocalDate.now(), Genre.METAL, bo);
-        tdpm.addTrack(new Track(1, "Kingdom Of Cards", Duration.ofMinutes(4).plusSeconds(21), tdpm));
-        tdpm.addTrack(new Track(2, "Running in Circles", Duration.ofMinutes(3).plusSeconds(56), tdpm));
-        tdpm.addTrack(new Track(3, "Careful What You Wish For", Duration.ofMinutes(4).plusSeconds(32), tdpm));
+        fgbgfm.addTrack(new Track(1, "Kingdom Of Cards", Duration.ofMinutes(4).plusSeconds(21), tdpm));
+        fgbgfm.addTrack(new Track(2, "Running in Circles", Duration.ofMinutes(3).plusSeconds(56), tdpm));
+        fgbgfm.addTrack(new Track(3, "Careful What You Wish For", Duration.ofMinutes(4).plusSeconds(32), tdpm));
+        fgbgfm.addReview(new Review(4, "Good"));
+        fgbgfm.addReview(new Review(4, "Nice album"));
+        fgbgfm.addReview(new Review(5, "Awesome"));
         bo.addAlbum(fgbgfm);
 
         bo.addConcert(new Concert("London", LocalDate.parse("2021-08-10"), bo));

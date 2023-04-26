@@ -20,6 +20,10 @@ public class Track {
         this(number, title, duration, null);
     }
 
+    public int getNumber() {
+        return number;
+    }
+
     public String getTitle() {
         return title;
     }

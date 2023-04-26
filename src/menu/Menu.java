@@ -64,6 +64,32 @@ public class Menu {
                 repository.deleteAlbum(artist, album);
                 System.out.println("Removed " + album);
             }
+            case "album-show" -> {
+                var album = chooseAlbum();
+                System.out.println(album);
+                System.out.println("Artist: " + album.getArtist().getName());
+                System.out.println("Genre: " + album.getGenre());
+                System.out.println("Rating: " + album.getRating().map(r -> String.format("%.1f", r)).orElse("N/A"));
+                System.out.println("Tracklist:");
+                album.getTracks().forEach(track -> System.out.printf("#%d. %s\n", track.getNumber(), track.getTitle()));
+            }
+            case "review-add" -> {
+                var album = chooseAlbum();
+                var review = readReview();
+                album.addReview(review);
+            }
+            case "album-reviews" -> {
+                var reviews = chooseAlbum().getReviews();
+                if (reviews.isEmpty()) {
+                    System.out.println("No reviews");
+                    break;
+                }
+                reviews.forEach(review -> {
+                    var rating = review.rating();
+                    var stars = "★".repeat(rating) + "☆".repeat(5 - rating);
+                    System.out.println(stars + " " + review.text());
+                });
+            }
             case "lyrics" -> {
                 var track = chooseTrack();
                 var lyrics = track.getLyrics();
@@ -139,6 +165,16 @@ public class Menu {
         var location = prompter.promptString("Concert location: ");
         var date = prompter.promptDate("Concert date: ");
         return new Concert(location, date, artist);
+    }
+
+    protected Review readReview() {
+        int rating;
+        do {
+            rating = prompter.promptInt("Rating: ");
+        } while (!(1 <= rating && rating <= 5));
+
+        var text = prompter.promptString("Review: ");
+        return new Review(rating, text);
     }
 
     protected Genre chooseGenre() {
