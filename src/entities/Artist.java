@@ -4,13 +4,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Artist {
+public class Artist implements DatabaseEntity {
+    private final int id;
     private final String name;
     private final List<Album> albums = new ArrayList<>();
     private final List<Concert> concerts = new ArrayList<>();
 
-    public Artist(String name) {
+    public Artist(int id, String name) {
+        this.id = id;
         this.name = name;
+    }
+
+    public Artist(String name) {
+        this(0, name);
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     public String getName() {

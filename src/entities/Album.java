@@ -6,7 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class Album {
+public class Album implements DatabaseEntity {
+    private final int id;
     private final String title;
     private final LocalDate releaseDate;
     private final Genre genre;
@@ -14,15 +15,21 @@ public class Album {
     private final List<Review> reviews = new ArrayList<>();
     private final Artist artist;
 
-    public Album(String title, LocalDate releaseDate, Genre genre, Artist artist) {
+    public Album(int id, String title, LocalDate releaseDate, Genre genre, Artist artist) {
+        this.id = id;
         this.title = title;
         this.releaseDate = releaseDate;
         this.genre = genre;
         this.artist = artist;
     }
 
-    public Album(String title, LocalDate releaseDate, Genre genre) {
-        this(title, releaseDate, genre, null);
+    public Album(String title, LocalDate releaseDate, Genre genre, Artist artist) {
+        this(0, title, releaseDate, genre, artist);
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
