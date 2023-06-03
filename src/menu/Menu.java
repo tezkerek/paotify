@@ -1,6 +1,8 @@
 package menu;
 
 import entities.*;
+import repository.AlbumService;
+import repository.ArtistService;
 import repository.Repository;
 
 import java.util.ArrayList;
@@ -130,6 +132,41 @@ public class Menu {
                     System.out.printf("%s %s - %s\n", concert.date(), concert.location(), artist.getName());
                 });
             }
+            case "db-artist-ls" -> {
+                System.out.println(ArtistService.getInstance().getArtists());
+            }
+            case "db-artist-add" -> {
+                var artist = readArtist();
+                ArtistService.getInstance().createArtist(artist);
+            }
+            case "db-artist-update" -> {
+                var artist = chooseDbArtist();
+                var newArtist = readArtist(artist);
+                ArtistService.getInstance().updateArtist(artist.getId(), newArtist);
+            }
+            case "db-artist-rm" -> {
+                var artist = chooseDbArtist();
+                ArtistService.getInstance().deleteArtist(artist.getId());
+                System.out.println("Removed " + artist);
+            }
+            case "db-album-ls" -> {
+                System.out.println(AlbumService.getInstance().getAlbums());
+            }
+            case "db-album-add" -> {
+                var album = readAlbum(chooseDbArtist());
+                AlbumService.getInstance().createAlbum(album);
+            }
+            case "db-album-update" -> {
+                var album = chooseDbAlbum();
+                var newArtist = chooseDbArtist();
+                var newAlbum = readAlbum(newArtist, album);
+                AlbumService.getInstance().updateAlbum(album.getId(), newAlbum);
+            }
+            case "db-album-rm" -> {
+                var album = chooseDbAlbum();
+                AlbumService.getInstance().deleteAlbum(album.getId());
+                System.out.println("Removed " + album);
+            }
         }
 
         return true;
@@ -140,9 +177,31 @@ public class Menu {
         return new Artist(name);
     }
 
+    protected Artist readArtist(Artist defaultArtist) {
+        var name = prompter.promptString(
+            String.format("Artist name [%s]: ", defaultArtist.getName()),
+            defaultArtist.getName()
+        );
+        return new Artist(name);
+    }
+
     protected Album readAlbum(Artist artist) {
         var title = prompter.promptString("Album title: ");
         var releaseDate = prompter.promptDate("Album release date: ");
+        var genre = chooseGenre();
+
+        return new Album(title, releaseDate, genre, artist);
+    }
+
+    protected Album readAlbum(Artist artist, Album defaultAlbum) {
+        var title = prompter.promptString(
+            String.format("Album title[%s]: ", defaultAlbum.getTitle()),
+            defaultAlbum.getTitle()
+        );
+        var releaseDate = prompter.promptDate(
+            String.format("Album release date[%s]: ", defaultAlbum.getReleaseDate()),
+            defaultAlbum.getReleaseDate()
+        );
         var genre = chooseGenre();
 
         return new Album(title, releaseDate, genre, artist);
@@ -185,8 +244,16 @@ public class Menu {
         return choose(repository.getArtists());
     }
 
+    protected Artist chooseDbArtist() {
+        return choose(ArtistService.getInstance().getArtists());
+    }
+
     protected Album chooseAlbum(Artist artist) {
         return choose(artist.getAlbums());
+    }
+
+    protected Album chooseDbAlbum() {
+        return choose(AlbumService.getInstance().getAlbums());
     }
 
     protected Album chooseAlbum() {

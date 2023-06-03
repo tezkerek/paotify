@@ -26,6 +26,12 @@ public class Prompter {
         return scanner.nextLine();
     }
 
+    public String promptString(String prompt, String defaultValue) {
+        out.print(prompt);
+        var value = scanner.nextLine();
+        return value.equals("") ? defaultValue : value;
+    }
+
     public int promptInt(String prompt) throws NumberFormatException {
         return Integer.parseInt(promptString(prompt));
     }
@@ -58,6 +64,11 @@ public class Prompter {
 
     public LocalDate promptDate(String prompt) throws DateTimeParseException {
         var dateStr = promptString(prompt);
+        return LocalDate.parse(dateStr);
+    }
+
+    public LocalDate promptDate(String prompt, LocalDate defaultValue) throws DateTimeParseException {
+        var dateStr = promptString(prompt, defaultValue.toString());
         return LocalDate.parse(dateStr);
     }
 }
