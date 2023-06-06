@@ -51,8 +51,7 @@ public class Prompter {
     protected static final String DURATION_REGEX = "(\\d+):(\\d+)";
     Pattern durationPattern = Pattern.compile(DURATION_REGEX);
 
-    protected Duration promptDuration(String prompt) throws PromptException {
-        var input = promptString(prompt);
+    protected Duration parseDuration(String input) throws PromptException {
         var matcher = durationPattern.matcher(input);
         if (!matcher.find()) {
             throw new PromptException("Invalid duration");
@@ -60,6 +59,16 @@ public class Prompter {
         var minutes = Integer.parseInt(matcher.group(1));
         var seconds = Integer.parseInt(matcher.group(2));
         return Duration.ofSeconds(minutes * 60L + seconds);
+    }
+
+    protected Duration promptDuration(String prompt) throws PromptException {
+        var input = promptString(prompt);
+        return parseDuration(input);
+    }
+
+    protected Duration promptDuration(String prompt, Duration defaultValue) throws PromptException {
+        var input = promptString(prompt, formatDuration(defaultValue));
+        return parseDuration(input);
     }
 
     public LocalDate promptDate(String prompt) throws DateTimeParseException {
@@ -70,5 +79,9 @@ public class Prompter {
     public LocalDate promptDate(String prompt, LocalDate defaultValue) throws DateTimeParseException {
         var dateStr = promptString(prompt, defaultValue.toString());
         return LocalDate.parse(dateStr);
+    }
+
+    public static String formatDuration(Duration duration) {
+        return "%d:%d".formatted(duration.toMinutes(), duration.toSecondsPart());
     }
 }

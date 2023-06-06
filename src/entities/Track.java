@@ -1,23 +1,32 @@
 package entities;
 
+import menu.Prompter;
+
 import java.time.Duration;
 
-public class Track {
+public class Track implements DatabaseEntity {
+    private final int id;
     private final int number;
     private final String title;
     private final Duration duration;
     private String lyrics = "";
     private final Album album;
 
-    public Track(int number, String title, Duration duration, Album album) {
+    public Track(int id, int number, String title, Duration duration, Album album) {
+        this.id = id;
         this.number = number;
         this.title = title;
         this.duration = duration;
         this.album = album;
     }
 
-    public Track(int number, String title, Duration duration) {
-        this(number, title, duration, null);
+    public Track(int number, String title, Duration duration, Album album) {
+        this(0, number, title, duration, album);
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     public int getNumber() {
@@ -30,6 +39,10 @@ public class Track {
 
     public Duration getDuration() {
         return duration;
+    }
+
+    public String getFormattedDuration() {
+        return Prompter.formatDuration(duration);
     }
 
     public String getLyrics() {

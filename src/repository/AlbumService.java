@@ -42,9 +42,33 @@ public class AlbumService {
         }
     }
 
+    public List<Album> getAlbumsByArtist(int artistId) {
+        try {
+            var statement = connection.prepareStatement("select * from `albums` where `artist_id`=?");
+            statement.setInt(1, artistId);
+            var resultSet = statement.executeQuery();
+            return parseAlbums(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Album getAlbumById(int albumId) {
+        try {
+            var statement = connection.prepareStatement("select * from `albums` where `id`=?");
+            statement.setInt(1, albumId);
+            var resultSet = statement.executeQuery();
+            var parsedAlbums = parseAlbums(resultSet);
+            return parsedAlbums.isEmpty() ? null : parsedAlbums.get(0);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void createAlbum(Album album) {
         try {
-            var statement = connection.prepareStatement("insert into `albums` (`title`, `release_date`, `genre`, `artist_id`) values (?, ?, ?, ?)");
+            var statement = connection.prepareStatement(
+                "insert into `albums` (`title`, `release_date`, `genre`, `artist_id`) values (?, ?, ?, ?)");
             statement.setString(1, album.getTitle());
             statement.setString(2, album.getReleaseDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
             statement.setString(3, album.getGenre().name());
@@ -57,7 +81,8 @@ public class AlbumService {
 
     public void updateAlbum(int id, Album newAlbum) {
         try {
-            var statement = connection.prepareStatement("update `albums` set `title`=?, `release_date`=?, `genre`=?, `artist_id`=? where `id`=?");
+            var statement = connection.prepareStatement(
+                "update `albums` set `title`=?, `release_date`=?, `genre`=?, `artist_id`=? where `id`=?");
             statement.setString(1, newAlbum.getTitle());
             statement.setString(2, newAlbum.getReleaseDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
             statement.setString(3, newAlbum.getGenre().name());
@@ -71,7 +96,7 @@ public class AlbumService {
 
     public void deleteAlbum(int id) {
         try {
-            var statement = connection.prepareStatement("delete from `albums`where `id`=?");
+            var statement = connection.prepareStatement("delete from `albums` where `id`=?");
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {

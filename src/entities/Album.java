@@ -48,6 +48,10 @@ public class Album implements DatabaseEntity {
         return Collections.unmodifiableList(tracks);
     }
 
+    public int getTrackCount() {
+        return tracks.size();
+    }
+
     public void addTrack(Track track) {
         tracks.add(track);
     }

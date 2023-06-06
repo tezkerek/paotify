@@ -55,6 +55,18 @@ public class EntityPrompter extends Prompter {
         return new Track(number, title, duration, album);
     }
 
+    public Track readTrack(int number, Album album, Track defaultTrack) throws PromptException {
+        var title = promptString(
+            "Track #%d title [%s]: ".formatted(number, defaultTrack.getTitle()),
+            defaultTrack.getTitle()
+        );
+        var duration = promptDuration(
+            "Track #%d duration [%s]: ".formatted(number, defaultTrack.getFormattedDuration()),
+            defaultTrack.getDuration()
+        );
+        return new Track(number, title, duration, album);
+    }
+
     public Playlist readPlaylist(List<Track> availableTracks) {
         var name = promptString("Playlist name: ");
         var tracks = chooseMultipleTracks(availableTracks);

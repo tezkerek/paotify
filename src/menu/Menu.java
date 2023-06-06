@@ -7,6 +7,7 @@ import entities.Track;
 import repository.AlbumService;
 import repository.ArtistService;
 import repository.Repository;
+import repository.TrackService;
 
 public class Menu {
     EntityPrompter prompter;
@@ -166,6 +167,25 @@ public class Menu {
                 AlbumService.getInstance().deleteAlbum(album.getId());
                 System.out.println("Removed " + album);
             }
+            case "db-track-ls" -> {
+                System.out.println(TrackService.getInstance().getAllTracks());
+            }
+            case "db-track-add" -> {
+                var album = chooseDbAlbum();
+                var number = album.getTrackCount() + 1;
+                var track = prompter.readTrack(number, album);
+                TrackService.getInstance().createTrack(track);
+            }
+            case "db-track-update" -> {
+                var track = chooseDbTrack();
+                var newTrack = prompter.readTrack(track.getNumber(), track.getAlbum(), track);
+                TrackService.getInstance().updateTrack(track.getId(), newTrack);
+            }
+            case "db-track-rm" -> {
+                var track = chooseDbTrack();
+                TrackService.getInstance().deleteTrack(track.getId());
+                System.out.println("Removed " + track);
+            }
         }
 
         return true;
@@ -187,8 +207,12 @@ public class Menu {
         return prompter.choose(artist.getAlbums());
     }
 
+    protected Album chooseDbAlbum(Artist artist) {
+        return prompter.choose(AlbumService.getInstance().getAlbumsByArtist(artist.getId()));
+    }
+
     protected Album chooseDbAlbum() {
-        return prompter.choose(AlbumService.getInstance().getAlbums());
+        return chooseDbAlbum(chooseDbArtist());
     }
 
     protected Album chooseAlbum() {
@@ -201,6 +225,14 @@ public class Menu {
 
     protected Track chooseTrack() {
         return chooseTrack(chooseAlbum());
+    }
+
+    protected Track chooseDbTrack(Album album) {
+        return prompter.choose(TrackService.getInstance().getTracksByAlbum(album.getId()));
+    }
+
+    protected Track chooseDbTrack() {
+        return chooseDbTrack(chooseDbAlbum());
     }
 
     protected Playlist choosePlaylist() {
