@@ -10,8 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class InMemoryRepository implements Repository {
-    List<Artist> artists = new ArrayList<>();
-    List<Playlist> playlists = new ArrayList<>();
+    private final List<Artist> artists = new ArrayList<>();
+    private final List<Playlist> playlists = new ArrayList<>();
 
     @Override
     public List<Artist> getArtists() {

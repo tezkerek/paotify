@@ -4,8 +4,8 @@ import entities.*;
 import repository.*;
 
 public class Menu {
-    EntityPrompter prompter;
-    Repository repository;
+    protected final EntityPrompter prompter;
+    protected final Repository repository;
 
     public Menu(Repository repository) {
         this.prompter = new EntityPrompter(System.in, System.out);
@@ -22,9 +22,7 @@ public class Menu {
             case "quit", "exit" -> {
                 return false;
             }
-            case "artist-ls" -> {
-                System.out.println(repository.getArtists());
-            }
+            case "artist-ls" -> System.out.println(repository.getArtists());
             case "artist-add" -> {
                 var artist = prompter.readArtist();
                 repository.addArtist(artist);
@@ -34,9 +32,7 @@ public class Menu {
                 repository.deleteArtist(artist);
                 System.out.println("Removed " + artist);
             }
-            case "album-ls" -> {
-                System.out.println(repository.getAlbums());
-            }
+            case "album-ls" -> System.out.println(repository.getAlbums());
             case "album-add" -> {
                 var artist = chooseArtist();
                 var album = prompter.readAlbum(artist);
@@ -107,9 +103,7 @@ public class Menu {
                 var playlist = readPlaylist();
                 repository.addPlaylist(playlist);
             }
-            case "playlist-ls" -> {
-                System.out.println(repository.getPlaylists());
-            }
+            case "playlist-ls" -> System.out.println(repository.getPlaylists());
             case "playlist-show" -> {
                 var playlist = choosePlaylist();
                 playlist.getTracks().forEach(track -> System.out.println(track.toLongString()));
@@ -126,9 +120,7 @@ public class Menu {
                     System.out.printf("%s %s - %s\n", concert.date(), concert.location(), artist.getName());
                 });
             }
-            case "db-artist-ls" -> {
-                System.out.println(ArtistService.getInstance().getArtists());
-            }
+            case "db-artist-ls" -> System.out.println(ArtistService.getInstance().getArtists());
             case "db-artist-add" -> {
                 var artist = prompter.readArtist();
                 ArtistService.getInstance().createArtist(artist);
@@ -143,9 +135,7 @@ public class Menu {
                 ArtistService.getInstance().deleteArtist(artist.getId());
                 System.out.println("Removed " + artist);
             }
-            case "db-album-ls" -> {
-                System.out.println(AlbumService.getInstance().getAlbums());
-            }
+            case "db-album-ls" -> System.out.println(AlbumService.getInstance().getAlbums());
             case "db-album-add" -> {
                 var album = prompter.readAlbum(chooseDbArtist());
                 AlbumService.getInstance().createAlbum(album);
@@ -161,9 +151,7 @@ public class Menu {
                 AlbumService.getInstance().deleteAlbum(album.getId());
                 System.out.println("Removed " + album);
             }
-            case "db-track-ls" -> {
-                System.out.println(TrackService.getInstance().getAllTracks());
-            }
+            case "db-track-ls" -> System.out.println(TrackService.getInstance().getAllTracks());
             case "db-track-add" -> {
                 var album = chooseDbAlbum();
                 var number = album.getTrackCount() + 1;

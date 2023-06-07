@@ -13,8 +13,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Prompter {
-    Scanner scanner;
-    PrintStream out;
+    protected final Scanner scanner;
+    protected final PrintStream out;
 
     public Prompter(InputStream in, PrintStream out) {
         this.scanner = new Scanner(in);
@@ -49,7 +49,7 @@ public class Prompter {
     }
 
     protected static final String DURATION_REGEX = "(\\d+):(\\d+)";
-    Pattern durationPattern = Pattern.compile(DURATION_REGEX);
+    protected final Pattern durationPattern = Pattern.compile(DURATION_REGEX);
 
     protected Duration parseDuration(String input) throws PromptException {
         var matcher = durationPattern.matcher(input);
