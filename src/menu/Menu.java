@@ -1,13 +1,7 @@
 package menu;
 
-import entities.Album;
-import entities.Artist;
-import entities.Playlist;
-import entities.Track;
-import repository.AlbumService;
-import repository.ArtistService;
-import repository.Repository;
-import repository.TrackService;
+import entities.*;
+import repository.*;
 
 public class Menu {
     EntityPrompter prompter;
@@ -186,6 +180,21 @@ public class Menu {
                 TrackService.getInstance().deleteTrack(track.getId());
                 System.out.println("Removed " + track);
             }
+            case "db-concert-ls" -> System.out.println(ConcertService.getInstance().getConcerts());
+            case "db-concert-add" -> {
+                var concert = prompter.readConcert(chooseDbArtist());
+                ConcertService.getInstance().createConcert(concert);
+            }
+            case "db-concert-update" -> {
+                var concert = chooseDbConcert();
+                var newConcert = prompter.readConcert(concert.artist(), concert);
+                ConcertService.getInstance().updateConcert(concert.getId(), newConcert);
+            }
+            case "db-concert-rm" -> {
+                var concert = chooseDbConcert();
+                ConcertService.getInstance().deleteConcert(concert.getId());
+                System.out.println("Removed " + concert);
+            }
         }
 
         return true;
@@ -237,5 +246,9 @@ public class Menu {
 
     protected Playlist choosePlaylist() {
         return prompter.choose(repository.getPlaylists());
+    }
+
+    protected Concert chooseDbConcert() {
+        return prompter.choose(ConcertService.getInstance().getConcerts());
     }
 }

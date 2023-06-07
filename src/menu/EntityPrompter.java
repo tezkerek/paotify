@@ -79,6 +79,15 @@ public class EntityPrompter extends Prompter {
         return new Concert(location, date, artist);
     }
 
+    public Concert readConcert(Artist artist, Concert defaultConcert) {
+        var location = promptString(
+            "Concert location [%s]: ".formatted(defaultConcert.location()),
+            defaultConcert.location()
+        );
+        var date = promptDate("Concert date [%s]: ".formatted(defaultConcert.date()), defaultConcert.date());
+        return new Concert(location, date, artist);
+    }
+
     public Review readReview() {
         int rating;
         do {
