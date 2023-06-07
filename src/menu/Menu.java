@@ -6,10 +6,12 @@ import repository.*;
 public class Menu {
     protected final EntityPrompter prompter;
     protected final Repository repository;
+    protected final Logger logger;
 
     public Menu(Repository repository) {
         this.prompter = new EntityPrompter(System.in, System.out);
         this.repository = repository;
+        this.logger = new Logger("report.csv");
     }
 
     public void run() {
@@ -183,7 +185,13 @@ public class Menu {
                 ConcertService.getInstance().deleteConcert(concert.getId());
                 System.out.println("Removed " + concert);
             }
+            default -> {
+                System.out.println("Unknown command");
+                return true;
+            }
         }
+
+        logger.log(cmd);
 
         return true;
     }
